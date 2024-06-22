@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Control GPIO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .button {
+            padding: 15px 25px;
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+            margin: 10px;
+        }
+        .button:hover {background-color: #3e8e41}
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        .button2 {background-color: #f44336;} /* Red */
+        .button2:hover {background-color: #da190b}
+        .button2:active {
+            background-color: #da190b;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    </style>
+    <script>
+        function setGPIO(state) {
+            fetch('https://samart-pole-default-rtdb.firebaseio.com/push/gpio/gpio1.json', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(state)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al actualizar el GPIO en Firebase');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Estado GPIO actualizado:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Control GPIO 1</h1>
+    <button class="button" onclick="setGPIO('high')">HIGH</button>
+    <button class="button button2" onclick="setGPIO('low')">LOW</button>
+</body>
+</html>
