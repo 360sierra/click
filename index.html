@@ -52,7 +52,7 @@
             fetch('/get_gpio_state')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('gpioState').innerText = 'Estado actual del GPIO en Firebase: ' + data;
+                document.getElementById('gpioState').innerText = 'Estado actual del GPIO: ' + data;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -67,6 +67,6 @@
     <h1>Control GPIO 1</h1>
     <button class="button" onclick="setGPIO('high')">HIGH</button>
     <button class="button button2" onclick="setGPIO('low')">LOW</button>
-    <p id="gpioState">Estado actual del GPIO en Firebase: Desconocido</p>
+    <p id="gpioState">Estado actual del GPIO: Desconocido</p>
 </body>
 </html>
