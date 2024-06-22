@@ -37,31 +37,36 @@
     </style>
     <script>
         function setGPIO(state) {
-            fetch('https://samart-pole-default-rtdb.firebaseio.com/push/gpio/gpio1.json', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(state)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al actualizar el GPIO en Firebase');
-                }
-                return response.json();
-            })
+            fetch('/set_gpio?state=' + state)
+            .then(response => response.text())
             .then(data => {
                 console.log('Estado GPIO actualizado:', data);
+                updateGPIOState();
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
+
+        function updateGPIOState() {
+            fetch('/get_gpio_state')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('gpioState').innerText = 'Estado actual del GPIO: ' + data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Actualizar el estado del GPIO al cargar la página
+        window.onload = updateGPIOState;
     </script>
 </head>
 <body>
     <h1>Control GPIO 1</h1>
     <button class="button" onclick="setGPIO('high')">HIGH</button>
     <button class="button button2" onclick="setGPIO('low')">LOW</button>
+    <p id="gpioState">Estado actual del GPIO: Desconocido</p>
 </body>
 </html>
