@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Control GPIO-1</title>
+    <title>Control de GPIO</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,7 +27,9 @@
             box-shadow: 0 5px #666;
             transform: translateY(4px);
         }
-        .button2 {background-color: #f44336;} /* Red */
+        .button2 {
+            background-color: #f44336; /* Red */
+        }
         .button2:hover {background-color: #da190b}
         .button2:active {
             background-color: #da190b;
@@ -36,34 +39,20 @@
     </style>
     <script>
         function setGPIO(state) {
-            fetch('/set_gpio?state=' + state)
+            fetch(`/set_gpio?state=${state}`)
             .then(response => response.text())
             .then(data => {
                 console.log('Estado GPIO actualizado:', data);
-                updateGPIOState();
+                document.getElementById('gpioState').innerText = `Estado actual del GPIO: ${data}`;
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
-
-        function updateGPIOState() {
-            fetch('/get_gpio_state')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('gpioState').innerText = 'Estado actual del GPIO: ' + data;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        // Actualizar el estado del GPIO al cargar la página
-        window.onload = updateGPIOState;
     </script>
 </head>
 <body>
-    <h1>Control GPIO 1</h1>
+    <h1>Control GPIO</h1>
     <button class="button" onclick="setGPIO('high')">HIGH</button>
     <button class="button button2" onclick="setGPIO('low')">LOW</button>
     <p id="gpioState">Estado actual del GPIO: Desconocido</p>
